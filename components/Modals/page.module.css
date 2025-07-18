@@ -1,0 +1,20 @@
+.infoModal {
+    position: fixed;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    background-color: var(--color-grayF6);
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 5;
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Roboto', Arial, sans-serif;
+    width: 90%;
+    max-width: 500px;
+}
+
+.infoModal>div {
+    text-align: center;
+}

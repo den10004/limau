@@ -1,0 +1,106 @@
+.cookiesModalWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background-color: transparent;
+}
+
+
+.cookiesModal {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    background-color: var(--color-white);
+    padding: 20px;
+    width: 90%;
+    max-width: 700px;
+
+}
+
+.settingsPanel>h3 {
+    margin: 10px 0;
+}
+
+.settingsPanel>div {
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.settingsPanel>div>label>input {
+    margin-right: 10px;
+    transform: scale(1.5);
+}
+
+
+
+@keyframes scaleDown {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+}
+
+.cookiesModal_header {
+    display: flex;
+    color: var(--color-black1C);
+
+}
+
+.content {
+    color: var(--color-black1C);
+}
+
+.cookiesModal_header>button {
+    background: transparent;
+}
+
+.cookiesModal_btn {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.cancel_btn {
+    background: transparent;
+    color: var(--color-black);
+}
+
+.accept_all {
+    padding: 10px;
+}
+
+@media (max-width: 600px) {
+    .cookiesModal_btn {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .accept_all {
+        margin: 5px 0;
+    }
+
+    .settingsPanel>div {
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+    }
+
+    .settingsPanel>div>label:nth-child(2) {
+        margin: 10px 0;
+    }
+
+}

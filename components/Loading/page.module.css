@@ -1,0 +1,29 @@
+.cardSkeleton {
+    background: var(--color-grayFA);
+    border-radius: 20px;
+    padding: 20px;
+    width: 1225px;
+    animation: colorChange 4s linear infinite;
+}
+
+
+
+@keyframes colorChange {
+    0% {
+        background-color: var(--color-grayF4);
+    }
+
+    50% {
+        background-color: var(--color-gray);
+    }
+
+    100% {
+        background-color: var(--color-grayF4);
+    }
+}
+
+@media screen and (max-width: 1265px) {
+    .cardSkeleton {
+        width: calc(100vw - 40px)
+    }
+}
