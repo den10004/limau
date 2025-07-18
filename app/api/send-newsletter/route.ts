@@ -6,9 +6,9 @@ export async function POST(req: NextRequest) {
 
   // 1. Получаем список подписчиков из Strapi REST API
   // Здесь предполагается, что у тебя есть публичный эндпоинт или token-based доступ
-  const res = await fetch(`${process.env.STRAPI_URL}/api/subscribers`, {
+  const res = await fetch(`${process.env.API_URL}/api/subscribers`, {
     headers: {
-      Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      Authorization: `Bearer ${process.env.TOKEN}`,
     },
   });
 
