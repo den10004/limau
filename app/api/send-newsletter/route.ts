@@ -1,9 +1,12 @@
+// app/api/email/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import path from "path";
-import ejs from "ejs";
+import { emailTemplate } from "@/lib/emailTemplate";
 
 export async function POST(req: NextRequest) {
+  console.log("=== ROUTE HANDLER STARTED ===");
+
   try {
     const { marked } = await import("marked");
 
@@ -16,18 +19,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Convert Markdown to HTML
-    const htmlContent = marked.parse(content);
+    const htmlContent = await marked.parse(content);
 
-    // Render EJS template
-    const templatePath = path.resolve(process.cwd(), "lib/emailTemplate.ejs");
+    const html = emailTemplate(title, htmlContent);
 
-    const html = await ejs.renderFile(templatePath, {
-      title,
-      htmlContent,
-    });
-
-    // Setup Nodemailer transporter
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
@@ -45,6 +40,8 @@ export async function POST(req: NextRequest) {
       subject: title,
       html,
     });
+
+    console.log("=== EMAIL SENT SUCCESSFULLY ===");
 
     return NextResponse.json(
       { message: "Email sent successfully" },
