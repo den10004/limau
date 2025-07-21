@@ -1,18 +1,19 @@
 import { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
+import { marked } from "marked";
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  console.log("Full received data:", data);
-
   const { emails, title, content } = data;
 
   if (!emails || emails.length === 0) {
-    console.log("No subscribers found inside API route");
-    return new Response(JSON.stringify({ message: "No subscribers found" }), {
+    return new Response(JSON.stringify({ message: "Подписчиков не найдено" }), {
       status: 200,
     });
   }
+
+  // Конвертация Markdown -> HTML
+  const htmlContent = marked.parse(content);
 
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -30,10 +31,40 @@ export async function POST(req: NextRequest) {
         from: process.env.EMAIL_USER,
         to: email,
         subject: title,
-        html: content,
+        html: `
+          <!DOCTYPE html>
+          <html lang="ru">
+            <head>
+              <meta charset="UTF-8" />
+              <title>${title}</title>
+            </head>
+            <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f7f7f7;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7f7f7; padding: 20px;">
+                <tr>
+                  <td align="center">
+                    <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding: 20px; border-radius: 8px;">
+                      <tr>
+                        <td>
+                          <h1 style="font-size: 20px; color: #333333;">${title}</h1>
+                          <div style="font-size: 16px; line-height: 1.5; color: #555555;">
+                            ${htmlContent}
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top: 20px; font-size: 12px; color: #999999; text-align: center;">
+                          © ${new Date().getFullYear()} Твой Блог. Все права защищены.
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </body>
+          </html>
+        `,
       };
 
-      console.log("Sending email to:", email);
       await transporter.sendMail(mailOptions);
     }
 
