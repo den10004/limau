@@ -22,7 +22,7 @@ export function emailTemplate(title: string, htmlContent: string) {
                 </tr>
                 <tr>
                   <td style="padding-top: 20px; font-size: 12px; color: var(--color-grayAO); text-align: center;">
-                    © ${new Date().getFullYear()} <a href="https://limaudio.ru">Limaudio.</a> Все права защищены.
+                    © ${new Date().getFullYear()} <a style="color: var(--color-grayAO)" href="https://limaudio.ru">Limaudio</a>. Все права защищены.
                   </td>
                 </tr>
               </table>
