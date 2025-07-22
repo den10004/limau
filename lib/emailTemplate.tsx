@@ -1,4 +1,8 @@
-export function emailTemplate(title: string, htmlContent: string) {
+export function emailTemplate(
+  title: string,
+  htmlContent: string,
+  email: string
+) {
   return `
     <!DOCTYPE html>
     <html lang="ru">
@@ -12,6 +16,16 @@ export function emailTemplate(title: string, htmlContent: string) {
             height: auto !important;
             display: block;
           }
+          .unsubscribe-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: var(--color-grayAO);
+            color: var(--color-white) !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+          }
         </style>
       </head>
       <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color: var(--color-white);">
@@ -24,6 +38,11 @@ export function emailTemplate(title: string, htmlContent: string) {
                     <h1 style="font-size: 20px; color: var(--color-black);">${title}</h1>
                     <div style="font-size: 16px; line-height: 1.5; color: var(--color-black); max-width: 100%; overflow-wrap: break-word;">
                       ${htmlContent}
+                    </div>
+                    <div style="text-align: center;">
+                      <a href="http://localhost:8000/unsubscribe?email=${encodeURIComponent(
+                        email
+                      )}" class="unsubscribe-btn">Отписаться от рассылки</a>
                     </div>
                   </td>
                 </tr>
