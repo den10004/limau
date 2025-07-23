@@ -1,31 +1,26 @@
 import { type NextPage } from "next";
 
-// Define the props type for the dynamic route
 type UnsubscribePageProps = {
   params: Promise<{ email: string }>;
 };
 
-// Server-side component to handle unsubscribe page with dynamic email route
 const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
   const { email } = await params;
-
-  // Log initial parameters
-  console.log("UnsubscribePage - Email:", email);
-  console.log("UnsubscribePage - Encoded Email:", encodeURIComponent(email));
-  console.log("UnsubscribePage - API URL:", process.env.API_URL);
-  console.log(
-    "UnsubscribePage - Token:",
-    process.env.TOKEN ? "Present" : "Missing"
-  );
 
   if (!email) {
     console.error("UnsubscribePage - No email provided");
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Ошибка отписки</h1>
-          <p className="text-red-600">Не указан email для отписки.</p>
-        </div>
+      <div
+        className="container text-h3-bold"
+        style={{
+          width: "100%",
+          flex: 1,
+          fontFamily: "Roboto",
+          marginTop: "20px",
+        }}
+      >
+        <div>Ошибка отписки</div>
+        <p style={{ marginTop: "20px" }}>Не указан email для отписки.</p>
       </div>
     );
   }
@@ -40,7 +35,6 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
     }
 
     const apiUrl = `${process.env.API_URL}/subscribers/delete-by-email/${email}`;
-    console.log("UnsubscribePage - Constructed API URL:", apiUrl);
 
     const response = await fetch(apiUrl, {
       method: "DELETE",
@@ -50,21 +44,22 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
       },
     });
 
-    console.log("UnsubscribePage - Response Status:", response.status);
-    console.log(
-      "UnsubscribePage - Response Headers:",
-      Object.fromEntries(response.headers.entries())
-    );
-
     if (response.ok) {
-      console.log("UnsubscribePage - Unsubscribe successful for:", email);
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-4">Отписка успешна</h1>
-            <p>Вы успешно отписались от рассылки.</p>
-            <p className="mt-4">Email: {decodeURIComponent(email)}</p>
-          </div>
+        <div
+          className="container"
+          style={{
+            width: "100%",
+            flex: 1,
+            fontFamily: "Roboto",
+            marginTop: "20px",
+          }}
+        >
+          <div className="text-h3-bold">Отписка успешна</div>
+          <p style={{ marginTop: "20px" }}>
+            Вы успешно отписались от рассылки.
+          </p>
+          <p className="">Email: {decodeURIComponent(email)}</p>
         </div>
       );
     } else {
@@ -80,16 +75,20 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
       );
     }
   } catch (error) {
-    console.error("UnsubscribePage - Error:", error);
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Ошибка отписки</h1>
-          <p className="text-red-600">
-            Произошла ошибка при попытке отписаться: {String(error)}.
-            Пожалуйста, попробуйте позже.
-          </p>
-        </div>
+      <div
+        className="container text-h3-bold"
+        style={{
+          width: "100%",
+          flex: 1,
+          fontFamily: "Roboto",
+          marginTop: "20px",
+        }}
+      >
+        <div className="">Ошибка отписки</div>
+        <p style={{ marginTop: "20px" }}>
+          Произошла ошибка при попытке отписаться
+        </p>
       </div>
     );
   }
