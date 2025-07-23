@@ -1,12 +1,15 @@
 import { type NextPage } from "next";
 
+// Define the props type for the dynamic route
 type UnsubscribePageProps = {
   params: Promise<{ email: string }>;
 };
 
+// Server-side component to handle unsubscribe page with dynamic email route
 const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
   const { email } = await params;
 
+  // Log initial parameters
   console.log("UnsubscribePage - Email:", email);
   console.log("UnsubscribePage - Encoded Email:", encodeURIComponent(email));
   console.log("UnsubscribePage - API URL:", process.env.API_URL);
@@ -14,7 +17,9 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
     "UnsubscribePage - Token:",
     process.env.TOKEN ? "Present" : "Missing"
   );
+
   if (!email) {
+    console.error("UnsubscribePage - No email provided");
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-md">
@@ -31,21 +36,22 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
         apiUrl: process.env.API_URL,
         token: process.env.TOKEN ? "Present" : "Missing",
       });
-      throw new Error("Server configuration error");
+      throw new Error("Server configuration error: Missing API_URL or TOKEN");
     }
 
-    const response = await fetch(
-      `${process.env.API_URL}/subscribers/delete-by-email/${encodeURIComponent(
-        email
-      )}`,
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${process.env.TOKEN}`,
-        },
-      }
-    );
+    const apiUrl = `${
+      process.env.API_URL
+    }/subscribers/delete-by-email/${encodeURIComponent(email)}`;
+    console.log("UnsubscribePage - Constructed API URL:", apiUrl);
+
+    const response = await fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.TOKEN}`,
+      },
+    });
+
     console.log("UnsubscribePage - Response Status:", response.status);
     console.log(
       "UnsubscribePage - Response Headers:",
@@ -53,6 +59,7 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
     );
 
     if (response.ok) {
+      console.log("UnsubscribePage - Unsubscribe successful for:", email);
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
           <div className="bg-white p-8 rounded-lg shadow-md">
@@ -68,16 +75,16 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
         status: response.status,
         statusText: response.statusText,
         errorText,
+        apiUrl,
       });
       throw new Error(
-        `Failed to unsubscribe: ${response.status} ${response.statusText}`
+        `Failed to unsubscribe: ${response.status} ${response.statusText} - ${errorText}`
       );
     }
   } catch (error) {
+    console.error("UnsubscribePage - Error:", error);
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        {email}
-        {encodeURIComponent(email)}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-2xl font-bold mb-4">Ошибка отписки</h1>
           <p className="text-red-600">
