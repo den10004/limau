@@ -76,6 +76,8 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
   } catch (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        {email}
+        {encodeURIComponent(email)}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-2xl font-bold mb-4">Ошибка отписки</h1>
           <p className="text-red-600">
