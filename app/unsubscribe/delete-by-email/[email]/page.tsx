@@ -1,18 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextPage } from "next";
 
-export default async function UnsubscribePage({
-  searchParams,
-}: {
-  searchParams: { email?: string };
-}) {
-  const email = searchParams.email;
+// Define the props type for the dynamic route
+type UnsubscribePageProps = {
+  params: Promise<{ email: string }>;
+};
+
+// Server-side component to handle unsubscribe page with dynamic email route
+const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
+  const { email } = await params;
 
   if (!email) {
     return (
-      <div className="">
-        <div className="">
-          <h1 className="">Ошибка отписки</h1>
-          <p className="">Не указан email для отписки.</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold mb-4">Ошибка отписки</h1>
+          <p className="text-red-600">Не указан email для отписки.</p>
         </div>
       </div>
     );
@@ -20,9 +22,9 @@ export default async function UnsubscribePage({
 
   try {
     const response = await fetch(
-      `${
-        process.env.API_URL
-      }/api/subscribers/delete-by-email/${encodeURIComponent(email)}`,
+      `${process.env.API_URL}/subscribers/delete-by-email/${encodeURIComponent(
+        email
+      )}`,
       {
         method: "DELETE",
         headers: {
@@ -34,9 +36,9 @@ export default async function UnsubscribePage({
 
     if (response.ok) {
       return (
-        <div className="">
-          <div className="">
-            <h1 className="">Отписка успешна</h1>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <h1 className="text-2xl font-bold mb-4">Отписка успешна</h1>
             <p>Вы успешно отписались от рассылки.</p>
             <p className="mt-4">Email: {decodeURIComponent(email)}</p>
           </div>
@@ -47,10 +49,10 @@ export default async function UnsubscribePage({
     }
   } catch (error) {
     return (
-      <div className="">
-        <div className="">
-          <h1 className="">Ошибка отписки</h1>
-          <p className="">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold mb-4">Ошибка отписки</h1>
+          <p className="text-red-600">
             Произошла ошибка при попытке отписаться. Пожалуйста, попробуйте
             позже.
           </p>
@@ -58,4 +60,6 @@ export default async function UnsubscribePage({
       </div>
     );
   }
-}
+};
+
+export default UnsubscribePage;

@@ -36,7 +36,7 @@ export function emailTemplate(
                     © ${new Date().getFullYear()} <a style="color: #A0A0A0" href="https://limaudio.ru">Limaudio</a>. Все права защищены.
                   </td>
                        <p style="font-size:12px; color:#A0A0A0; text-align:center;">
-          Если вы больше не хотите получать рассылку, <a href="https://limaudio.ru/unsubscribe?email=${encodeURIComponent(
+          Если вы больше не хотите получать рассылку, <a href="https://limaudio.ru/unsubscribe/delete-by-email?email=${encodeURIComponent(
             email
           )}">отписаться</a>.
         </p>
