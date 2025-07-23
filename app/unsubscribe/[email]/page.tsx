@@ -8,6 +8,7 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
   const { email } = await params;
 
   console.log("UnsubscribePage", email);
+  console.log("UnsubscribePage", encodeURIComponent(email));
 
   if (!email) {
     return (
