@@ -36,9 +36,7 @@ export function emailTemplate(
                     © ${new Date().getFullYear()} <a style="color: #A0A0A0" href="https://limaudio.ru">Limaudio</a>. Все права защищены.
                   </td>
                        <p style="font-size:12px; color:#A0A0A0; text-align:center;">
-          Если вы больше не хотите получать рассылку, <a href="https://limau-pi.vercel.app/unsubscribe/${encodeURIComponent(
-            email
-          )}">отписаться</a>.
+          Если вы больше не хотите получать рассылку, <a href="https://limau-pi.vercel.app/unsubscribe/${email}">отписаться</a>.
         </p>
                 </tr>
               </table>

@@ -39,9 +39,7 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
       throw new Error("Server configuration error: Missing API_URL or TOKEN");
     }
 
-    const apiUrl = `${
-      process.env.API_URL
-    }/subscribers/delete-by-email/${encodeURIComponent(email)}`;
+    const apiUrl = `${process.env.API_URL}/subscribers/delete-by-email/${email}`;
     console.log("UnsubscribePage - Constructed API URL:", apiUrl);
 
     const response = await fetch(apiUrl, {
