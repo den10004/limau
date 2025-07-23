@@ -1,5 +1,6 @@
 .popular__sort {
     display: flex;
+    font-family: "Roboto", "Arial", sans-serif;
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 10px;
