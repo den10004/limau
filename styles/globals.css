@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'SFProText';
-    src: url(./../fonts/SFProText-Regular.ttf) format('truetype');
+    src: url(./../fonts/SFProText-Regular.ttf);
     font-weight: 500;
     font-style: normal;
 }
