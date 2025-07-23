@@ -4,24 +4,41 @@ type UnsubscribePageProps = {
   params: Promise<{ email: string }>;
 };
 
+// Reusable component for the unsubscribe page layout
+const UnsubscribeContainer = ({
+  title,
+  message,
+  email,
+}: {
+  title: string;
+  message?: string;
+  email?: string;
+}) => (
+  <div
+    className="container text-h3-bold"
+    style={{
+      width: "100%",
+      flex: 1,
+      fontFamily: "Roboto",
+      marginTop: "20px",
+    }}
+  >
+    <div>{title}</div>
+    {message && <p style={{ marginTop: "20px" }}>{message}</p>}
+    {email && <p className="">Email: {decodeURIComponent(email)}</p>}
+  </div>
+);
+
 const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
   const { email } = await params;
 
   if (!email) {
     console.error("UnsubscribePage - No email provided");
     return (
-      <div
-        className="container text-h3-bold"
-        style={{
-          width: "100%",
-          flex: 1,
-          fontFamily: "Roboto",
-          marginTop: "20px",
-        }}
-      >
-        <div>Ошибка отписки</div>
-        <p style={{ marginTop: "20px" }}>Не указан email для отписки.</p>
-      </div>
+      <UnsubscribeContainer
+        title="Ошибка отписки"
+        message="Не указан email для отписки."
+      />
     );
   }
 
@@ -46,21 +63,11 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
 
     if (response.ok) {
       return (
-        <div
-          className="container"
-          style={{
-            width: "100%",
-            flex: 1,
-            fontFamily: "Roboto",
-            marginTop: "20px",
-          }}
-        >
-          <div className="text-h3-bold">Отписка успешна</div>
-          <p style={{ marginTop: "20px" }}>
-            Вы успешно отписались от рассылки.
-          </p>
-          <p className="">Email: {decodeURIComponent(email)}</p>
-        </div>
+        <UnsubscribeContainer
+          title="Отписка успешна"
+          message="Вы успешно отписались от рассылки."
+          email={email}
+        />
       );
     } else {
       const errorText = await response.text();
@@ -70,26 +77,21 @@ const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
         errorText,
         apiUrl,
       });
-      throw new Error(
-        `Failed to unsubscribe: ${response.status} ${response.statusText} - ${errorText}`
-      );
+      let errorMessage = `Failed to unsubscribe: ${response.status} ${response.statusText}`;
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMessage = errorJson.error?.message || errorMessage;
+      } catch (parseError) {
+        console.error("UnsubscribePage - Error parsing errorText:", parseError);
+      }
+      throw new Error(errorMessage);
     }
-  } catch (error) {
+  } catch (error: any) {
     return (
-      <div
-        className="container text-h3-bold"
-        style={{
-          width: "100%",
-          flex: 1,
-          fontFamily: "Roboto",
-          marginTop: "20px",
-        }}
-      >
-        <div className="">Ошибка отписки</div>
-        <p style={{ marginTop: "20px" }}>
-          Произошла ошибка при попытке отписаться
-        </p>
-      </div>
+      <UnsubscribeContainer
+        title="Ошибка отписки"
+        message={error.message || "Произошла ошибка при попытке отписаться"}
+      />
     );
   }
 };
