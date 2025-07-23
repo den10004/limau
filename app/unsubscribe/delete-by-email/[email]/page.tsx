@@ -7,7 +7,7 @@ type UnsubscribePageProps = {
 
 // Server-side component to handle unsubscribe page with dynamic email route
 const UnsubscribePage: NextPage<UnsubscribePageProps> = async ({ params }) => {
-  const { email } = await params;
+  const { email } = await params; // Await the params to resolve the Promise
 
   if (!email) {
     return (
