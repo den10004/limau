@@ -2,7 +2,7 @@ export function emailTemplate(
   title: string,
   htmlContent: string,
   email: string,
-  documentId: any
+  documentId?: string
 ) {
   return `
     <!DOCTYPE html>
@@ -35,7 +35,9 @@ export function emailTemplate(
                 <tr>
                   <td style="padding-top: 20px; font-size: 12px; color: #A0A0A0; text-align: center;">
                   <div>© ${new Date().getFullYear()} <a style="color: #A0A0A0" href="https://limaudio.ru">Limaudio</a>.</div>
-                  <div><a href="https://limaudio.ru/unsubscribe/${email}">отписаться</a> от рассылки ${documentId}</div>
+                  <div><a href="https://limaudio.ru/unsubscribe/${documentId}">отписаться</a> от рассылки</div>
+
+                  </tr>
               </table>
             </td>
           </tr>
