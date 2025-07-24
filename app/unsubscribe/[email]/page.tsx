@@ -4,7 +4,6 @@ type UnsubscribePageProps = {
   params: Promise<{ email: string }>;
 };
 
-// Reusable component for the unsubscribe page layout
 const UnsubscribeContainer = ({
   title,
   message,
