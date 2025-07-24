@@ -5,7 +5,7 @@ import { emailTemplate } from "@/lib/emailTemplate";
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const { emails, title, content, documentId } = data;
+  const { emails, title, content } = data;
 
   if (!emails || emails.length === 0) {
     return new Response(JSON.stringify({ message: "Подписчиков не найдено" }), {
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
         from: process.env.EMAIL_USER,
         to: email,
         subject: title,
-        html: emailTemplate(title, htmlContent, email, documentId),
+        html: emailTemplate(title, htmlContent, email),
       };
 
       await transporter.sendMail(mailOptions);
