@@ -10,6 +10,13 @@ type BaseBlock = {
   id: number;
 };
 
+type BaseCard = {
+  createdAt: string;
+  documentId: string;
+  id: number;
+  updatedAt: string;
+};
+
 interface RichTextBlock extends BaseBlock {
   __component: "shared.rich-text";
   body: string;
@@ -22,14 +29,10 @@ interface SliderBlock extends BaseBlock {
 
 type Block = RichTextBlock | SliderBlock;
 
-export type Topic = {
-  createdAt: string;
-  documentId: string;
-  id: number;
+export type Topic = BaseCard & {
   image: MediaFile;
   publishedAt: string;
   title: string;
-  updatedAt: string;
 };
 
 type Category = {
@@ -38,9 +41,7 @@ type Category = {
   name: string;
 };
 
-export type Articles = {
-  id: number;
-  documentId: string;
+export type Articles = BaseCard & {
   slug: string;
   title: string;
   description: string;
@@ -48,8 +49,6 @@ export type Articles = {
   url: string;
   date: string;
   views: number;
-  createdAt: string;
-  updatedAt: string;
   publishedAt: string;
   cover: MediaFile;
   blocks: Block[];
@@ -65,14 +64,10 @@ export type Articles = {
   };
 };
 
-export interface Article {
-  id: number;
-  documentId: string;
+export interface Article extends BaseCard {
   title: string;
   description: string;
   slug: string;
-  createdAt: string;
-  updatedAt: string;
   publishedAt: string;
   views: number;
   category: { name: string };
@@ -86,20 +81,31 @@ export interface PageProps {
   searchParams?: Record<string, string>;
 }
 
-export interface ArticleCard {
+export interface ArticleCard extends BaseCard {
   type: string;
   category: { name: string };
   comments: { count: number };
   cover: { url: string };
-  createdAt: string;
   description: string;
-  documentId: string;
-  id: number;
   publishedAt: string;
   slug: string;
   title: string;
   date?: string;
   topics?: Topic;
-  updatedAt: string;
   views: number;
 }
+
+export interface Reply extends BaseCard {
+  name: string;
+  text: string;
+  publishedAt: string;
+}
+
+export type CommentsProp = BaseCard & {
+  article: ArticleCard[];
+  name: string;
+  publishedAt: string;
+  replies: any[];
+  reply: any;
+  text: string;
+};

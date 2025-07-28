@@ -5,7 +5,6 @@ import BlogCard from "../BlogCard";
 import { CardsResponse } from "@/types/card";
 import Headline from "@/app/UI/headline";
 import CardSkeleton from "../Loading/CardSkeleton";
-import NoBlogs from "../NoBlogs";
 
 export default function PopularArticles({
   gridStyle,
@@ -64,10 +63,12 @@ export default function PopularArticles({
     >
       <Headline text="Популярные статьи" headstyle={headstyle} left={true} />
 
-      <div className="interes__card" style={{ marginTop: "20px" }}>
+      <div className="interes__card">
         {isLoading && <CardSkeleton heightPx="551px" />}
         {error && <div style={{ color: "red" }}>{error}</div>}
-        {!isLoading && !allCards && <NoBlogs />}
+        {!isLoading && !allCards && (
+          <Headline text="Нет доступных блогов" left={true} />
+        )}
         <div className="cards_container" style={{ grid: gridStyle }}>
           {sortedCards.map((card) => (
             <BlogCard key={card.id} card={card} type="small" />
