@@ -42,6 +42,12 @@ export default function Comments({
   } | null>(null);
   const [replyText, setReplyText] = useState("");
   const [localComments, setLocalComments] = useState<Comment[]>(comments);
+  const [visibleComments, setVisibleComments] = useState(3); // Количество отображаемых комментариев
+
+  // Функция для загрузки дополнительных комментариев
+  const loadMoreComments = () => {
+    setVisibleComments((prev) => prev + 3);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,9 +141,13 @@ export default function Comments({
     setReplyText(`@${commentName}, `);
     document.getElementById("reply")?.scrollIntoView({ behavior: "smooth" });
   };
+
   const topLevelComments = localComments.filter(
     (comment) => comment.reply === null
   );
+
+  // Получаем только видимые комментарии
+  const visibleTopLevelComments = topLevelComments.slice(0, visibleComments);
 
   return (
     <div className={styles.comments}>
@@ -147,7 +157,7 @@ export default function Comments({
           : `Комментарии (${commentsLength})`}
       </div>
       <div className={styles.comments__cards}>
-        {topLevelComments.map((comment) =>
+        {visibleTopLevelComments.map((comment) =>
           comment?.id ? (
             <article key={comment?.id} className={styles.comments__card}>
               <time className="text-small" dateTime="16-04-2025">
@@ -210,6 +220,7 @@ export default function Comments({
                     <button
                       aria-label="Отменить"
                       type="button"
+                      style={{ borderRadius: "100px" }}
                       className="blogbtn standart-btn text-h3"
                       onClick={() => {
                         setReplyingTo(null);
@@ -233,6 +244,19 @@ export default function Comments({
           ) : null
         )}
       </div>
+
+      {visibleComments < topLevelComments.length && (
+        <div className={styles.loadMoreContainer}>
+          <button
+            onClick={loadMoreComments}
+            aria-label="Показать ещё"
+            style={{ margin: "10px 0 0 20px" }}
+            className="blogbtnblue standart-btn text-h3"
+          >
+            Показать ещё
+          </button>
+        </div>
+      )}
 
       <div className={styles.comments__cards}>
         <div
